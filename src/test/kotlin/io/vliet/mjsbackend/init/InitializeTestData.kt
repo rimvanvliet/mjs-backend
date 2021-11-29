@@ -18,12 +18,6 @@ class InitializeTestData {
     lateinit var deviceRepository: DeviceRepository
 
     @Autowired
-    lateinit var deviceTypeRepository: DeviceTypeRepository
-
-    @Autowired
-    lateinit var locationRepository: LocationRepository
-
-    @Autowired
     lateinit var measurementRepository: MeasurementRepository
 
     @Autowired
@@ -34,16 +28,18 @@ class InitializeTestData {
         val devices = deviceRepository.findAll()
         val variables = variableRepository.findAll()
 
-        val variableValue = getRandomVariableValue(variables)
-        measurementRepository.save(
-            Measurement(
-                dateTime = Instant.now(),
-                value = variableValue.value,
-            ).with(
-                device = devices.random(),
-                variable = variableValue.variable
+        for (i in 1..20) {
+            val variableValue = getRandomVariableValue(variables)
+            measurementRepository.save(
+                Measurement(
+                    dateTime = Instant.now(),
+                    value = variableValue.value,
+                ).with(
+                    device = devices.random(),
+                    variable = variableValue.variable
+                )
             )
-        )
+        }
     }
 
     fun getRandomVariableValue(variables: List<Variable>): VariableValue {

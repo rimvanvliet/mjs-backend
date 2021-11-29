@@ -33,14 +33,18 @@ class DatasetOrderService {
 
     fun processDatasetOrderRequest(datasetOrderRequest: DatasetOrderController.DatasetOrderRequest): Either<String, List<Measurement>> {
         val startDate = if (datasetOrderRequest.startDate != null) try {
-            LocalDate.parse(datasetOrderRequest.startDate).atStartOfDay().atZone(ZoneId.of("Europe/Amsterdam"))
+            LocalDate.parse(datasetOrderRequest.startDate)
+                .atStartOfDay()
+                .atZone(ZoneId.of("Europe/Amsterdam"))
                 .toInstant()
         } catch (e: Exception) {
             return Either.left("Invalid startDate ${datasetOrderRequest.startDate}: ${e.message}")
         } else null
 
         val endDate = if (datasetOrderRequest.endDate != null) try {
-            LocalDate.parse(datasetOrderRequest.endDate).atStartOfDay().atZone(ZoneId.of("Europe/Amsterdam"))
+            LocalDate.parse(datasetOrderRequest.endDate)
+                .atTime(23,59,59,999999)
+                .atZone(ZoneId.of("Europe/Amsterdam"))
                 .toInstant()
         } catch (e: Exception) {
             return Either.left("Invalid endDate ${datasetOrderRequest.endDate}: ${e.message}")
@@ -49,11 +53,23 @@ class DatasetOrderService {
         val variables = variableRepository.findAll().filter {
             it.name in datasetOrderRequest.variables
         }
+        if (!variables.map{it.name}.containsAll(datasetOrderRequest.variables) )
+        {
+            return Either.left("Invalid variable ${datasetOrderRequest.variables.subtract(variables.map{it.name})}")
+        }
         val locations = locationRepository.findAll().filter {
             it.name in datasetOrderRequest.locations
         }
+        if (!locations.map{it.name}.containsAll(datasetOrderRequest.locations) )
+        {
+            return Either.left("Invalid variable ${datasetOrderRequest.locations.subtract(locations.map{it.name})}")
+        }
         val deviceTypes = deviceTypeRepository.findAll().filter {
             it.name in datasetOrderRequest.deviceTypes
+        }
+        if (!deviceTypes.map{it.name}.containsAll(datasetOrderRequest.deviceTypes) )
+        {
+            return Either.left("Invalid variable ${datasetOrderRequest.deviceTypes.subtract(deviceTypes.map{it.name})}")
         }
 
         val datasetOrder = DatasetOrder(

@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mjs-backend:
+    image: rimvanvliet/mjs-backend:latest
+    container_name: mjs-backend
+    environment:
+      - TZ
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mjs-backend-db
+    restart: always
+
+  mjs-backend-db:
+    image: rimvanvliet/mjs-backend-db:latest
+    container_name: mjs-backend-db
+    environment:
+      - TZ
+    volumes:
+      - mjs-data:/var/lib/postgresql/data
+      - mjs-backup:/backup
+    ports:
+      - "5432:5432"
+    restart: always
+volumes:
+  mjs-data:
+  mjs-backup:
