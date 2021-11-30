@@ -13,7 +13,7 @@ import kotlin.random.Random
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class InitializeTestData {
+class GenerateMeasurementTestData {
     @Autowired
     lateinit var deviceRepository: DeviceRepository
 
@@ -24,7 +24,7 @@ class InitializeTestData {
     lateinit var variableRepository: VariableRepository
 
     @Test
-    fun initSourceImportServiceTestData() {
+    fun generateMeasurementTestData() {
         val devices = deviceRepository.findAll()
         val variables = variableRepository.findAll()
 

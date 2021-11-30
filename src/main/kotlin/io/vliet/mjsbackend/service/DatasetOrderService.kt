@@ -62,14 +62,14 @@ class DatasetOrderService {
         }
         if (!locations.map{it.name}.containsAll(datasetOrderRequest.locations) )
         {
-            return Either.left("Invalid variable ${datasetOrderRequest.locations.subtract(locations.map{it.name})}")
+            return Either.left("Invalid location ${datasetOrderRequest.locations.subtract(locations.map{it.name})}")
         }
         val deviceTypes = deviceTypeRepository.findAll().filter {
             it.name in datasetOrderRequest.deviceTypes
         }
         if (!deviceTypes.map{it.name}.containsAll(datasetOrderRequest.deviceTypes) )
         {
-            return Either.left("Invalid variable ${datasetOrderRequest.deviceTypes.subtract(deviceTypes.map{it.name})}")
+            return Either.left("Invalid deviceType ${datasetOrderRequest.deviceTypes.subtract(deviceTypes.map{it.name})}")
         }
 
         val datasetOrder = DatasetOrder(

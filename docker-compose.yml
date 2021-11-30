@@ -18,10 +18,8 @@ services:
       - TZ
     volumes:
       - mjs-data:/var/lib/postgresql/data
-      - mjs-backup:/backup
     ports:
       - "5432:5432"
     restart: always
 volumes:
   mjs-data:
-  mjs-backup:

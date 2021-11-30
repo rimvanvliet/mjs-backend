@@ -48,7 +48,7 @@ alter table device
 
 INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (100, 'de war', 10, 1);
 INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (101, 'zeelt', 11, 1);
-INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (102, 'catherine', 10, 2);
+INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (102, 'catharijne', 10, 2);
 INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (103, 'croeselaan', 11, 2);
 
 
