@@ -20,7 +20,6 @@ class DatasetOrderController {
 
     val logger: Logger = LoggerFactory.getLogger(this.javaClass.name)
 
-
     @PostMapping("")
     fun createNewDatasetOrder(@Valid @RequestBody datasetOrderRequest: DatasetOrderRequest): ResponseEntity<Any> {
         logger.info("Endpoint access: /datasetOrders (createNewDatasetOrder)")
@@ -35,6 +34,12 @@ class DatasetOrderController {
         val variables: List<String> = emptyList(),
         val locations: List<String> = emptyList(),
         val deviceTypes: List<String> = emptyList(),
+        val outputType: OutputType = OutputType.CSV,
     )
+
+    enum class OutputType {
+        JSON, CSV
+    }
+
 }
 

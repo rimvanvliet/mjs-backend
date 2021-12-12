@@ -1,9 +1,8 @@
 package io.vliet.mjsbackend.repository
 
 
-import io.vliet.mjsbackend.domain.*
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import io.vliet.mjsbackend.domain.DatasetOrder
+import io.vliet.mjsbackend.domain.Measurement
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityManager
@@ -13,14 +12,12 @@ import javax.persistence.TypedQuery
 @Component
 class MeasurementDao {
 
-    val logger: Logger = LoggerFactory.getLogger(this.javaClass.name)
-
     @PersistenceContext
     lateinit var entityManager: EntityManager
 
 
     @Transactional
-    fun fetchAllByDatasetOrder(datasetOrder: DatasetOrder): List<Measurement> {
+    fun fetchDatasetOrder(datasetOrder: DatasetOrder): List<Measurement> {
 
         val parameterMap = mutableMapOf<String, Any>()
         val query = StringBuilder(
@@ -54,6 +51,8 @@ class MeasurementDao {
             }
             query.append(selectionQuery.joinToString(" AND ", prefix = " WHERE "))
         }
+
+        query.append(" ORDER BY m.dateTime, m.device")
 
         val q: TypedQuery<Measurement> =
             entityManager

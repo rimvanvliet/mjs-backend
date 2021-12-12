@@ -3,13 +3,10 @@ package io.vliet.mjsbackend.service
 import arrow.core.Either
 import io.vliet.mjsbackend.controller.DatasetOrderController
 import io.vliet.mjsbackend.domain.DatasetOrder
-import io.vliet.mjsbackend.domain.Measurement
 import io.vliet.mjsbackend.repository.DeviceTypeRepository
 import io.vliet.mjsbackend.repository.LocationRepository
 import io.vliet.mjsbackend.repository.MeasurementDao
 import io.vliet.mjsbackend.repository.VariableRepository
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -29,9 +26,10 @@ class DatasetOrderService {
     @Autowired
     lateinit var measurementDao: MeasurementDao
 
-    val logger: Logger = LoggerFactory.getLogger(this.javaClass.name)
+    @Autowired
+    lateinit var measurementService: MeasurementService
 
-    fun processDatasetOrderRequest(datasetOrderRequest: DatasetOrderController.DatasetOrderRequest): Either<String, List<Measurement>> {
+    fun processDatasetOrderRequest(datasetOrderRequest: DatasetOrderController.DatasetOrderRequest): Either<String, Any> {
         val startDate = if (datasetOrderRequest.startDate != null) try {
             LocalDate.parse(datasetOrderRequest.startDate)
                 .atStartOfDay()
@@ -43,7 +41,7 @@ class DatasetOrderService {
 
         val endDate = if (datasetOrderRequest.endDate != null) try {
             LocalDate.parse(datasetOrderRequest.endDate)
-                .atTime(23,59,59,999999)
+                .atTime(23, 59, 59, 999999)
                 .atZone(ZoneId.of("Europe/Amsterdam"))
                 .toInstant()
         } catch (e: Exception) {
@@ -53,23 +51,20 @@ class DatasetOrderService {
         val variables = variableRepository.findAll().filter {
             it.name in datasetOrderRequest.variables
         }
-        if (!variables.map{it.name}.containsAll(datasetOrderRequest.variables) )
-        {
-            return Either.left("Invalid variable ${datasetOrderRequest.variables.subtract(variables.map{it.name})}")
+        if (!variables.map { it.name }.containsAll(datasetOrderRequest.variables)) {
+            return Either.left("Invalid variable ${datasetOrderRequest.variables.subtract(variables.map { it.name }.toSet())}")
         }
         val locations = locationRepository.findAll().filter {
             it.name in datasetOrderRequest.locations
         }
-        if (!locations.map{it.name}.containsAll(datasetOrderRequest.locations) )
-        {
-            return Either.left("Invalid location ${datasetOrderRequest.locations.subtract(locations.map{it.name})}")
+        if (!locations.map { it.name }.containsAll(datasetOrderRequest.locations)) {
+            return Either.left("Invalid location ${datasetOrderRequest.locations.subtract(locations.map { it.name }.toSet())}")
         }
         val deviceTypes = deviceTypeRepository.findAll().filter {
             it.name in datasetOrderRequest.deviceTypes
         }
-        if (!deviceTypes.map{it.name}.containsAll(datasetOrderRequest.deviceTypes) )
-        {
-            return Either.left("Invalid deviceType ${datasetOrderRequest.deviceTypes.subtract(deviceTypes.map{it.name})}")
+        if (!deviceTypes.map { it.name }.containsAll(datasetOrderRequest.deviceTypes)) {
+            return Either.left("Invalid deviceType ${datasetOrderRequest.deviceTypes.subtract(deviceTypes.map { it.name }.toSet())}")
         }
 
         val datasetOrder = DatasetOrder(
@@ -80,6 +75,11 @@ class DatasetOrderService {
             deviceTypes = deviceTypes,
         )
 
-        return Either.right(measurementDao.fetchAllByDatasetOrder(datasetOrder))
+        val measurements = measurementDao.fetchDatasetOrder(datasetOrder)
+
+        return if (datasetOrderRequest.outputType == DatasetOrderController.OutputType.JSON)
+            Either.right(measurements)
+        else
+            Either.right(measurementService.toCsv(measurements))
     }
 }

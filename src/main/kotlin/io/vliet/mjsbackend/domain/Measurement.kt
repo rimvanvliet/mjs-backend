@@ -1,5 +1,6 @@
 package io.vliet.mjsbackend.domain
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.Instant
 import javax.persistence.*
 
@@ -8,8 +9,10 @@ import javax.persistence.*
 class Measurement(
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long = 0,
-    val dateTime: Instant? = null,
-    val value: String? = null,
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "Europe/Amsterdam")
+    val dateTime: Instant,
+    val value: String,
 ) {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "device_id")
@@ -27,13 +30,4 @@ class Measurement(
         this.variable = variable
         return this
     }
-
-    fun fullCopy(
-        id: Long = this.id,
-        dateTime: Instant? = this.dateTime,
-        value: String? = this.value,
-        device: Device? = this.device,
-        variable: Variable? = this.variable
-    ) =
-        Measurement(id, dateTime, value).with(device, variable)
 }

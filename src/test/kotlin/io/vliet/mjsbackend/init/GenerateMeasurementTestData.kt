@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import kotlin.random.Random
 
 @RunWith(SpringRunner::class)
@@ -27,30 +28,39 @@ class GenerateMeasurementTestData {
     fun generateMeasurementTestData() {
         val devices = deviceRepository.findAll()
         val variables = variableRepository.findAll()
+        val initTime = Instant.now()
 
-        for (i in 1..20) {
-            val variableValue = getRandomVariableValue(variables)
-            measurementRepository.save(
-                Measurement(
-                    dateTime = Instant.now(),
-                    value = variableValue.value,
-                ).with(
-                    device = devices.random(),
-                    variable = variableValue.variable
-                )
-            )
+        for (i in 1..5) {
+            val dateTime = initTime
+                .plus(i * 15L, ChronoUnit.MINUTES)
+                .plus(i * 7L, ChronoUnit.SECONDS)
+            for (device in devices) {
+                for (variable in variables) {
+                    val variableValue = getRandomVariableValue(variable)
+                    measurementRepository.save(
+                        Measurement(
+                            dateTime = dateTime,
+                            value = variableValue.value,
+                        ).with(
+                            device = device,
+                            variable = variableValue.variable
+                        )
+                    )
+                }
+            }
         }
     }
 
-    fun getRandomVariableValue(variables: List<Variable>): VariableValue {
-        val variable = variables.random()
+    fun getRandomVariableValue(variable: Variable): VariableValue {
 
         return when (variable.name) {
             "CO2" -> VariableValue(variable, (Random.nextInt(400, 950)).toString())
-            "temperatuur" -> VariableValue(variable, (Random.nextInt(10, 26)).toString())
-            "luchtvochtigheid" -> VariableValue(variable, (Random.nextInt(30, 90)).toString())
-            else -> { // Note the block
-                VariableValue(variable, (Random.nextInt(400, 950)).toString())
+            "temperature" -> VariableValue(variable, (Random.nextInt(10, 26)).toString())
+            "relative humidity" -> VariableValue(variable, (Random.nextInt(30, 90)).toString())
+            "PM2.5" -> VariableValue(variable, (Random.nextInt(7, 20)).toString())
+            "PM10" -> VariableValue(variable, (Random.nextInt(10, 40)).toString())
+            else -> {
+                VariableValue(variable, "ERROR")
             }
         }
     }
