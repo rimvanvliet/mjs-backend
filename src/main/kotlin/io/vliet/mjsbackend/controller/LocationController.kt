@@ -34,7 +34,7 @@ class LocationController {
     fun getLocationById(@PathVariable(value = "id") locationId: Long): ResponseEntity<Location> {
         return locationRepository.findById(locationId).map { location ->
             ResponseEntity.ok(location)
-        }.orElseGet({ ResponseEntity.notFound().build() })
+        }.orElseGet { ResponseEntity.notFound().build() }
     }
 
     @DeleteMapping("/{id}")
@@ -42,7 +42,7 @@ class LocationController {
         return locationRepository.findById(locationId).map { location ->
             locationRepository.deleteById(locationId)
             ResponseEntity.ok("Location verwijderd")
-        }.orElseGet({ ResponseEntity.notFound().build() })
+        }.orElseGet { ResponseEntity.notFound().build() }
     }
 }
 

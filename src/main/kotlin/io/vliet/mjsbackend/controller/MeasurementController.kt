@@ -34,7 +34,7 @@ class MeasurementController {
     fun getMeasurementById(@PathVariable(value = "id") measurementId: Long): ResponseEntity<Measurement> {
         return measurementRepository.findById(measurementId).map { measurement ->
             ResponseEntity.ok(measurement)
-        }.orElseGet({ ResponseEntity.notFound().build() })
+        }.orElseGet { ResponseEntity.notFound().build() }
     }
 
     @DeleteMapping("/{id}")
@@ -42,7 +42,7 @@ class MeasurementController {
         return measurementRepository.findById(measurementId).map { measurement ->
             measurementRepository.deleteById(measurementId)
             ResponseEntity.ok("Measurement verwijderd")
-        }.orElseGet({ ResponseEntity.notFound().build() })
+        }.orElseGet { ResponseEntity.notFound().build() }
     }
 }
 

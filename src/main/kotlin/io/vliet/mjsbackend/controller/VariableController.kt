@@ -34,7 +34,7 @@ class VariableController {
     fun getVariableById(@PathVariable(value = "id") variableId: Long): ResponseEntity<Variable> {
         return variableRepository.findById(variableId).map { variable ->
             ResponseEntity.ok(variable)
-        }.orElseGet({ ResponseEntity.notFound().build() })
+        }.orElseGet { ResponseEntity.notFound().build() }
     }
 
     @DeleteMapping("/{id}")
@@ -42,7 +42,7 @@ class VariableController {
         return variableRepository.findById(variableId).map { variable ->
             variableRepository.deleteById(variableId)
             ResponseEntity.ok("Variable verwijderd")
-        }.orElseGet({ ResponseEntity.notFound().build() })
+        }.orElseGet { ResponseEntity.notFound().build() }
     }
 }
 

@@ -36,7 +36,7 @@ class DatasetOrderService {
                 .atZone(ZoneId.of("Europe/Amsterdam"))
                 .toInstant()
         } catch (e: Exception) {
-            return Either.left("Invalid startDate ${datasetOrderRequest.startDate}: ${e.message}")
+            return Either.Left("Invalid startDate ${datasetOrderRequest.startDate}: ${e.message}")
         } else null
 
         val endDate = if (datasetOrderRequest.endDate != null) try {
@@ -45,26 +45,26 @@ class DatasetOrderService {
                 .atZone(ZoneId.of("Europe/Amsterdam"))
                 .toInstant()
         } catch (e: Exception) {
-            return Either.left("Invalid endDate ${datasetOrderRequest.endDate}: ${e.message}")
+            return Either.Left("Invalid endDate ${datasetOrderRequest.endDate}: ${e.message}")
         } else null
 
         val variables = variableRepository.findAll().filter {
             it.name in datasetOrderRequest.variables
         }
         if (!variables.map { it.name }.containsAll(datasetOrderRequest.variables)) {
-            return Either.left("Invalid variable ${datasetOrderRequest.variables.subtract(variables.map { it.name }.toSet())}")
+            return Either.Left("Invalid variable ${datasetOrderRequest.variables.subtract(variables.map { it.name }.toSet())}")
         }
         val locations = locationRepository.findAll().filter {
             it.name in datasetOrderRequest.locations
         }
         if (!locations.map { it.name }.containsAll(datasetOrderRequest.locations)) {
-            return Either.left("Invalid location ${datasetOrderRequest.locations.subtract(locations.map { it.name }.toSet())}")
+            return Either.Left("Invalid location ${datasetOrderRequest.locations.subtract(locations.map { it.name }.toSet())}")
         }
         val deviceTypes = deviceTypeRepository.findAll().filter {
             it.name in datasetOrderRequest.deviceTypes
         }
         if (!deviceTypes.map { it.name }.containsAll(datasetOrderRequest.deviceTypes)) {
-            return Either.left("Invalid deviceType ${datasetOrderRequest.deviceTypes.subtract(deviceTypes.map { it.name }.toSet())}")
+            return Either.Left("Invalid deviceType ${datasetOrderRequest.deviceTypes.subtract(deviceTypes.map { it.name }.toSet())}")
         }
 
         val datasetOrder = DatasetOrder(
@@ -78,8 +78,8 @@ class DatasetOrderService {
         val measurements = measurementDao.fetchDatasetOrder(datasetOrder)
 
         return if (datasetOrderRequest.outputType == DatasetOrderController.OutputType.JSON)
-            Either.right(measurements)
+            Either.Right(measurements)
         else
-            Either.right(measurementService.toCsv(measurements))
+            Either.Right(measurementService.toCsv(measurements))
     }
 }

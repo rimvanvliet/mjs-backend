@@ -34,7 +34,7 @@ class DeviceController {
     fun getDeviceById(@PathVariable(value = "id") deviceId: Long): ResponseEntity<Device> {
         return deviceRepository.findById(deviceId).map { device ->
             ResponseEntity.ok(device)
-        }.orElseGet({ ResponseEntity.notFound().build() })
+        }.orElseGet { ResponseEntity.notFound().build() }
     }
 
     @DeleteMapping("/{id}")
@@ -42,7 +42,7 @@ class DeviceController {
         return deviceRepository.findById(deviceId).map { device ->
             deviceRepository.deleteById(deviceId)
             ResponseEntity.ok("Device verwijderd")
-        }.orElseGet({ ResponseEntity.notFound().build() })
+        }.orElseGet { ResponseEntity.notFound().build() }
     }
 }
 

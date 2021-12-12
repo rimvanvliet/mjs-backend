@@ -31,23 +31,23 @@ class MeasurementDao {
             val selectionQuery = mutableListOf<String>()
             if (datasetOrder.startDate != null) {
                 selectionQuery.add("m.dateTime >= :startDate")
-                parameterMap.put("startDate", datasetOrder.startDate)
+                parameterMap["startDate"] = datasetOrder.startDate
             }
             if (datasetOrder.endDate != null) {
                 selectionQuery.add("m.dateTime <= :endDate")
-                parameterMap.put("endDate", datasetOrder.endDate)
+                parameterMap["endDate"] = datasetOrder.endDate
             }
             if (datasetOrder.variables.isNotEmpty()) {
                 selectionQuery.add("v in (:variables)")
-                parameterMap.put("variables", datasetOrder.variables)
+                parameterMap["variables"] = datasetOrder.variables
             }
             if (datasetOrder.locations.isNotEmpty()) {
                 selectionQuery.add("l in (:locations)")
-                parameterMap.put("locations", datasetOrder.locations)
+                parameterMap["locations"] = datasetOrder.locations
             }
             if (datasetOrder.deviceTypes.isNotEmpty()) {
                 selectionQuery.add("dt in (:deviceTypes)")
-                parameterMap.put("deviceTypes", datasetOrder.deviceTypes)
+                parameterMap["deviceTypes"] = datasetOrder.deviceTypes
             }
             query.append(selectionQuery.joinToString(" AND ", prefix = " WHERE "))
         }
