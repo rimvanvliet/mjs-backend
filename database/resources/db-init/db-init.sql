@@ -1,55 +1,18 @@
-create table if not exists location
-(
-    id   bigint not null
-        constraint location_pkey
-            primary key,
-    name varchar(255)
-);
-
-alter table location
-    owner to mjs;
-
-INSERT INTO public.location (id, name) VALUES (1, 'amersfoort');
-INSERT INTO public.location (id, name) VALUES (2, 'utrecht');
-
-
-
-create table if not exists device_type
-(
-    id   bigint not null
-        constraint device_type_pkey
-            primary key,
-    name varchar(255)
-);
-
-alter table device_type
-    owner to mjs;
-
-INSERT INTO public.device_type (id, name) VALUES (10, 'MJS_DT-001');
-INSERT INTO public.device_type (id, name) VALUES (11, 'MJS_DT-002');
-
-
 create table if not exists device
 (
     id             bigint not null
         constraint device_pkey
             primary key,
-    name           varchar(255),
-    device_type_id bigint
-        constraint fko9oabhnk3f79y77ifapu6yp7t
-            references device_type,
-    location_id    bigint
-        constraint fkpi1ebkqu0bc3f3yh500kyf1m8
-            references location
+    name           varchar(255)
 );
 
 alter table device
     owner to mjs;
 
-INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (100, '47', 10, 1);
-INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (101, '546', 11, 1);
-INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (102, '111', 10, 2);
-INSERT INTO public.device (id, name, device_type_id, location_id) VALUES (103, '364', 11, 2);
+INSERT INTO public.device (id, name) VALUES (100, '47');
+INSERT INTO public.device (id, name) VALUES (101, '546');
+INSERT INTO public.device (id, name) VALUES (102, '111');
+INSERT INTO public.device (id, name) VALUES (103, '364');
 
 
 create table if not exists variable

@@ -23,11 +23,10 @@ class MeasurementDao {
         val query = StringBuilder(
             "SELECT m FROM Measurement m " +
                     "JOIN Variable v on m.variable = v.id " +
-                    "JOIN Location l on m.device.location = l.id " +
-                    "JOIN DeviceType dt on m.device.deviceType = dt.id "
+                    "JOIN Device d on m.device = d.id "
         )
 
-        if (datasetOrder.variables.isNotEmpty() || datasetOrder.locations.isNotEmpty() || datasetOrder.deviceTypes.isNotEmpty()) {
+        if (datasetOrder.variables.isNotEmpty() || datasetOrder.devices.isNotEmpty()) {
             val selectionQuery = mutableListOf<String>()
             if (datasetOrder.startDate != null) {
                 selectionQuery.add("m.dateTime >= :startDate")
@@ -41,13 +40,9 @@ class MeasurementDao {
                 selectionQuery.add("v in (:variables)")
                 parameterMap["variables"] = datasetOrder.variables
             }
-            if (datasetOrder.locations.isNotEmpty()) {
-                selectionQuery.add("l in (:locations)")
-                parameterMap["locations"] = datasetOrder.locations
-            }
-            if (datasetOrder.deviceTypes.isNotEmpty()) {
-                selectionQuery.add("dt in (:deviceTypes)")
-                parameterMap["deviceTypes"] = datasetOrder.deviceTypes
+            if (datasetOrder.devices.isNotEmpty()) {
+                selectionQuery.add("d in (:devices)")
+                parameterMap["devices"] = datasetOrder.devices
             }
             query.append(selectionQuery.joinToString(" AND ", prefix = " WHERE "))
         }

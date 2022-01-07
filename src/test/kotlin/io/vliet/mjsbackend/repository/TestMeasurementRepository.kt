@@ -12,10 +12,7 @@ import java.time.Instant
 @SpringBootTest
 class TestMeasurementRepository {
     @Autowired
-    lateinit var deviceTypeRepository: DeviceTypeRepository
-
-    @Autowired
-    lateinit var locationRepository: LocationRepository
+    lateinit var deviceRepository: DeviceRepository
 
     @Autowired
     lateinit var measurementDao: MeasurementDao
@@ -25,20 +22,18 @@ class TestMeasurementRepository {
 
     @Test
     fun initSourceImportServiceTestData() {
-        val deviceTypes = deviceTypeRepository.findAll()
+        val devices = deviceRepository.findAll()
 //        val variables = variableRepository.findAll()
-        val locations = locationRepository.findAll()//findById(2L)
 
         val datasetOrder = DatasetOrder(
             startDate = Instant.parse("2021-11-27T21:03:47.595761Z"),
-            deviceTypes = deviceTypes,
+            devices = devices,
             variables = emptyList(),//variables,
-            locations = locations
         )
 
         measurementDao.fetchDatasetOrder(datasetOrder)
             .forEach {
-                println("Measurement: ${it.value}${it.variable?.unit} ${it.variable?.name} at ${it.dateTime} on device ${it.device?.name} (type: ${it.device?.deviceType?.name}) in ${it.device?.location?.name}")
+                println("Measurement: ${it.value}${it.variable?.unit} ${it.variable?.name} at ${it.dateTime} on device ${it.device?.name} (type: ${it.device?.name}) ")
             }
 
     }

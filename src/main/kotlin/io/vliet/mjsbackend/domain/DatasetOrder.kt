@@ -6,7 +6,6 @@ data class DatasetOrder(
     val startDate: Instant? = null,
     val endDate: Instant? = null,
     val variables: List<Variable>,
-    val locations: List<Location>,
-    val deviceTypes: List<DeviceType>
+    val devices: List<Device>
 )
 

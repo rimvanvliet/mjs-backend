@@ -3,8 +3,7 @@ package io.vliet.mjsbackend.service
 import arrow.core.Either
 import io.vliet.mjsbackend.controller.DatasetOrderController
 import io.vliet.mjsbackend.domain.DatasetOrder
-import io.vliet.mjsbackend.repository.DeviceTypeRepository
-import io.vliet.mjsbackend.repository.LocationRepository
+import io.vliet.mjsbackend.repository.DeviceRepository
 import io.vliet.mjsbackend.repository.MeasurementDao
 import io.vliet.mjsbackend.repository.VariableRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,13 +14,10 @@ import java.time.ZoneId
 @Service
 class DatasetOrderService {
     @Autowired
-    lateinit var deviceTypeRepository: DeviceTypeRepository
+    lateinit var deviceRepository: DeviceRepository
 
     @Autowired
     lateinit var variableRepository: VariableRepository
-
-    @Autowired
-    lateinit var locationRepository: LocationRepository
 
     @Autowired
     lateinit var measurementDao: MeasurementDao
@@ -54,25 +50,18 @@ class DatasetOrderService {
         if (!variables.map { it.name }.containsAll(datasetOrderRequest.variables)) {
             return Either.Left("Invalid variable ${datasetOrderRequest.variables.subtract(variables.map { it.name }.toSet())}")
         }
-        val locations = locationRepository.findAll().filter {
-            it.name in datasetOrderRequest.locations
+        val devices = deviceRepository.findAll().filter {
+            it.name in datasetOrderRequest.devices
         }
-        if (!locations.map { it.name }.containsAll(datasetOrderRequest.locations)) {
-            return Either.Left("Invalid location ${datasetOrderRequest.locations.subtract(locations.map { it.name }.toSet())}")
-        }
-        val deviceTypes = deviceTypeRepository.findAll().filter {
-            it.name in datasetOrderRequest.deviceTypes
-        }
-        if (!deviceTypes.map { it.name }.containsAll(datasetOrderRequest.deviceTypes)) {
-            return Either.Left("Invalid deviceType ${datasetOrderRequest.deviceTypes.subtract(deviceTypes.map { it.name }.toSet())}")
+        if (!devices.map { it.name }.containsAll(datasetOrderRequest.devices)) {
+            return Either.Left("Invalid deviceType ${datasetOrderRequest.devices.subtract(devices.map { it.name }.toSet())}")
         }
 
         val datasetOrder = DatasetOrder(
             startDate = startDate,
             endDate = endDate,
             variables = variables,
-            locations = locations,
-            deviceTypes = deviceTypes,
+            devices = devices,
         )
 
         val measurements = measurementDao.fetchDatasetOrder(datasetOrder)

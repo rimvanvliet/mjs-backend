@@ -32,8 +32,7 @@ class DatasetOrderController {
         val startDate: String?,
         val endDate: String?,
         val variables: List<String> = emptyList(),
-        val locations: List<String> = emptyList(),
-        val deviceTypes: List<String> = emptyList(),
+        val devices: List<String> = emptyList(),
         val outputType: OutputType = OutputType.CSV,
     )
 
