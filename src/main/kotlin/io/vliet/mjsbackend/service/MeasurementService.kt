@@ -17,7 +17,7 @@ class MeasurementService {
 
         val orderedVariables = groupedMeasurementsByDateAndDevice
             .values
-            .flatMap { ml -> ml.map { it.variable?.name } }
+            .flatMap { ml -> ml.map { it.variable?.substance } }
             .mapNotNull { it }
             .toSet()
             .sortedBy { it }
@@ -31,7 +31,7 @@ class MeasurementService {
             return@map listOf(it.key.device?.name, date) +
                     collectOnIndex(
                         CollectableValues(orderedVariables,
-                            it.value.sortedBy { msrmnt -> msrmnt.variable?.name },
+                            it.value.sortedBy { msrmnt -> msrmnt.variable?.substance },
                             emptyList()))
                         .accumulator
         }
@@ -45,7 +45,7 @@ class MeasurementService {
             return CollectableValues(emptyList(), emptyList(), collectableValues.accumulator)
         else {
             return if (collectableValues.sortedMeasurements.isNotEmpty()
-                && collectableValues.sortedMeasurements.first().variable?.name?.uppercase() == collectableValues.orderedVariables.first().uppercase())
+                && collectableValues.sortedMeasurements.first().variable?.substance?.uppercase() == collectableValues.orderedVariables.first().uppercase())
                 collectOnIndex(
                     CollectableValues(
                         collectableValues.orderedVariables.drop(1),

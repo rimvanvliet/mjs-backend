@@ -33,7 +33,7 @@ class TestMeasurementRepository {
 
         measurementDao.fetchDatasetOrder(datasetOrder)
             .forEach {
-                println("Measurement: ${it.value}${it.variable?.unit} ${it.variable?.name} at ${it.dateTime} on device ${it.device?.name} (type: ${it.device?.name}) ")
+                println("Measurement: ${it.value}${it.variable?.unit} ${it.variable?.reuseName} at ${it.dateTime} on device ${it.device?.name} (type: ${it.device?.name}) ")
             }
 
     }

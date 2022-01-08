@@ -45,10 +45,10 @@ class DatasetOrderService {
         } else null
 
         val variables = variableRepository.findAll().filter {
-            it.name in datasetOrderRequest.variables
+            it.substance in datasetOrderRequest.variables
         }
-        if (!variables.map { it.name }.containsAll(datasetOrderRequest.variables)) {
-            return Either.Left("Invalid variable ${datasetOrderRequest.variables.subtract(variables.map { it.name }.toSet())}")
+        if (!variables.map { it.substance }.containsAll(datasetOrderRequest.variables)) {
+            return Either.Left("Invalid variable ${datasetOrderRequest.variables.subtract(variables.map { it.substance }.toSet())}")
         }
         val devices = deviceRepository.findAll().filter {
             it.name in datasetOrderRequest.devices

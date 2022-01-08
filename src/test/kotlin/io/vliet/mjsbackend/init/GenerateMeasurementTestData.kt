@@ -53,7 +53,7 @@ class GenerateMeasurementTestData {
 
     fun getRandomVariableValue(variable: Variable): VariableValue {
 
-        return when (variable.name) {
+        return when (variable.substance) {
             "CO2" -> VariableValue(variable, (Random.nextInt(400, 950)).toString())
             "temperature" -> VariableValue(variable, (Random.nextInt(10, 26)).toString())
             "relative humidity" -> VariableValue(variable, (Random.nextInt(30, 90)).toString())

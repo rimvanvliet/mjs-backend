@@ -1,13 +1,3 @@
-create table if not exists device
-(
-    id             bigint not null
-        constraint device_pkey
-            primary key,
-    name           varchar(255)
-);
-
-alter table device
-    owner to mjs;
 
 INSERT INTO public.device (id, name) VALUES (100, '47');
 INSERT INTO public.device (id, name) VALUES (101, '546');
@@ -15,42 +5,36 @@ INSERT INTO public.device (id, name) VALUES (102, '111');
 INSERT INTO public.device (id, name) VALUES (103, '364');
 
 
-create table if not exists variable
-(
-    id   bigint not null
-        constraint variable_pkey
-            primary key,
-    name varchar(255),
-    unit varchar(255)
-);
-
-alter table variable
-    owner to mjs;
-
-INSERT INTO public.variable (id, name, unit) VALUES (200, 'CO2', 'ppm');
-INSERT INTO public.variable (id, name, unit) VALUES (201, 'temperature', '°C');
-INSERT INTO public.variable (id, name, unit) VALUES (202, 'relative humidity', '%RH');
-INSERT INTO public.variable (id, name, unit) VALUES (203, 'PM10', 'µg/m3');
-INSERT INTO public.variable (id, name, unit) VALUES (204, 'PM2.5', 'µg/m3');
+INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (200, 'CO2', 1, 'CO2', 'ppm');
+INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (201, 'temperature', 2, 'temperature', '°C');
+INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (202, 'relative humidity', 3, 'relative humidity', '%RH');
+INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (203, 'PM10', 4, 'PM10', 'µg/m3');
+INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (204, 'PM2.5', 5, 'PM2.5', 'µg/m3');
 
 
-create table if not exists measurement
-(
-    id          bigint not null
-        constraint measurement_pkey
-            primary key,
-    date_time   timestamp,
-    value       varchar(255),
-    device_id   bigint
-        constraint fkfk341lu27m89eohc71wnwf8bt
-            references device,
-    variable_id bigint
-        constraint fkheatxji7vvs2bgcur4jrw9t0a
-            references variable
-);
 
-alter table measurement
-    owner to mjs;
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (300, 100, 200);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (301, 101, 200);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (302, 102, 200);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (303, 103, 200);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (304, 100, 201);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (305, 101, 201);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (306, 102, 201);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (307, 103, 201);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (308, 100, 202);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (309, 101, 202);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (310, 102, 202);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (311, 103, 202);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (312, 100, 203);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (313, 101, 203);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (314, 102, 203);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (315, 103, 203);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (316, 100, 204);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (317, 101, 204);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (318, 102, 204);
+INSERT INTO public.device_variable (id, device_id, variable_id) VALUES (319, 103, 204);
+
+
 
 INSERT INTO public.measurement (id, date_time, value, device_id, variable_id) VALUES (1000, '2021-12-12 11:01:51.986065', '885', 100, 200);
 INSERT INTO public.measurement (id, date_time, value, device_id, variable_id) VALUES (1001, '2021-12-12 11:01:51.986065', '16', 100, 201);
@@ -152,8 +136,4 @@ INSERT INTO public.measurement (id, date_time, value, device_id, variable_id) VA
 INSERT INTO public.measurement (id, date_time, value, device_id, variable_id) VALUES (1097, '2021-12-12 12:02:19.986065', '56', 103, 202);
 INSERT INTO public.measurement (id, date_time, value, device_id, variable_id) VALUES (1098, '2021-12-12 12:02:19.986065', '28', 103, 203);
 INSERT INTO public.measurement (id, date_time, value, device_id, variable_id) VALUES (1099, '2021-12-12 12:02:19.986065', '8', 103, 204);
-
-
-create sequence if not exists hibernate_sequence;
-alter sequence hibernate_sequence restart 1000;
 
