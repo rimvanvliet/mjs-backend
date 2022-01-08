@@ -1,5 +1,6 @@
 package io.vliet.mjsbackend.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import javax.persistence.*
@@ -12,7 +13,8 @@ class Device(
     @Column(unique = true)
     val name: String? = null,
 ){
+    @JsonIgnore
     @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "device", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-    var variables: List<DeviceVariabele> = mutableListOf()
+    @OneToMany(mappedBy = "device", cascade = [CascadeType.ALL])
+    var variables: Set<DeviceVariabele> = mutableSetOf()
 }

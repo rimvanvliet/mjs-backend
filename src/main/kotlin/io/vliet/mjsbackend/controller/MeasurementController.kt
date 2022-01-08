@@ -25,23 +25,10 @@ class MeasurementController {
         logger.info("Endpoint access: /measurement (getAllMeasurement)")
             return ResponseEntity.ok(measurementRepository.findAll())
     }
-
-    @PostMapping("")
-    fun createNewMeasurement(@Valid @RequestBody measurementList: List<Measurement>): List<Measurement> =
-        measurementRepository.saveAll(measurementList)
-
     @GetMapping("/{id}")
     fun getMeasurementById(@PathVariable(value = "id") measurementId: Long): ResponseEntity<Measurement> {
         return measurementRepository.findById(measurementId).map { measurement ->
             ResponseEntity.ok(measurement)
-        }.orElseGet { ResponseEntity.notFound().build() }
-    }
-
-    @DeleteMapping("/{id}")
-    fun deleteMeasurementById(@PathVariable(value = "id") measurementId: Long): ResponseEntity<String> {
-        return measurementRepository.findById(measurementId).map { measurement ->
-            measurementRepository.deleteById(measurementId)
-            ResponseEntity.ok("Measurement verwijderd")
         }.orElseGet { ResponseEntity.notFound().build() }
     }
 }

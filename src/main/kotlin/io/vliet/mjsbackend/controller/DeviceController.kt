@@ -26,22 +26,10 @@ class DeviceController {
             return ResponseEntity.ok(deviceRepository.findAll())
     }
 
-    @PostMapping("")
-    fun createNewDevice(@Valid @RequestBody deviceList: List<Device>): List<Device> =
-        deviceRepository.saveAll(deviceList)
-
     @GetMapping("/{id}")
     fun getDeviceById(@PathVariable(value = "id") deviceId: Long): ResponseEntity<Device> {
         return deviceRepository.findById(deviceId).map { device ->
             ResponseEntity.ok(device)
-        }.orElseGet { ResponseEntity.notFound().build() }
-    }
-
-    @DeleteMapping("/{id}")
-    fun deleteDeviceById(@PathVariable(value = "id") deviceId: Long): ResponseEntity<String> {
-        return deviceRepository.findById(deviceId).map { device ->
-            deviceRepository.deleteById(deviceId)
-            ResponseEntity.ok("Device verwijderd")
         }.orElseGet { ResponseEntity.notFound().build() }
     }
 }

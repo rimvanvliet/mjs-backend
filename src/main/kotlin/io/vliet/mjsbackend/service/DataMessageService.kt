@@ -51,7 +51,7 @@ class DataMessageService {
                 return@forEach
             }
             if (variableList.size > 1) {
-                logger.warn("Multiple varibles found for variableKey ${it.variableKey} and device ${device.name}; ${variableList[0].reuseName} used.")
+                logger.warn("Multiple varibles found for variableKey ${it.variableKey} and device ${device.name}; ${variableList[0].uniqueName} used.")
             }
             // TODO add & check datatype of a variable
             measurementRepository.save(Measurement(
@@ -63,5 +63,4 @@ class DataMessageService {
             ))
         }
     }
-
 }

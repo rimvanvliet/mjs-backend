@@ -26,22 +26,10 @@ class VariableController {
             return ResponseEntity.ok(variableRepository.findAll())
     }
 
-    @PostMapping("")
-    fun createNewVariable(@Valid @RequestBody variableList: List<Variable>): List<Variable> =
-        variableRepository.saveAll(variableList)
-
     @GetMapping("/{id}")
     fun getVariableById(@PathVariable(value = "id") variableId: Long): ResponseEntity<Variable> {
         return variableRepository.findById(variableId).map { variable ->
             ResponseEntity.ok(variable)
-        }.orElseGet { ResponseEntity.notFound().build() }
-    }
-
-    @DeleteMapping("/{id}")
-    fun deleteVariableById(@PathVariable(value = "id") variableId: Long): ResponseEntity<String> {
-        return variableRepository.findById(variableId).map { variable ->
-            variableRepository.deleteById(variableId)
-            ResponseEntity.ok("Variable verwijderd")
         }.orElseGet { ResponseEntity.notFound().build() }
     }
 }

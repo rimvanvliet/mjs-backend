@@ -1,7 +1,7 @@
 package io.vliet.mjsbackend.repository
 
 
-import io.vliet.mjsbackend.domain.DatasetOrder
+import io.vliet.mjsbackend.messages.DatasetOrder
 import io.vliet.mjsbackend.domain.Measurement
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional

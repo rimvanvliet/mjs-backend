@@ -1,7 +1,7 @@
 version: '3'
 services:
   mjs-backend:
-    image: rimvanvliet/mjs-backend:latest
+    image: rimvanvliet/mjs-backend:0.2.0
     container_name: mjs-backend
     environment:
       - TZ
@@ -12,7 +12,7 @@ services:
     restart: always
 
   mjs-backend-db:
-    image: rimvanvliet/mjs-backend-db:latest
+    image: rimvanvliet/mjs-backend-db:0.2.0
     container_name: mjs-backend-db
     environment:
       - TZ

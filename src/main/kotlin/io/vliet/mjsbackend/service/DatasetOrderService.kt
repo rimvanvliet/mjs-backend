@@ -2,7 +2,7 @@ package io.vliet.mjsbackend.service
 
 import arrow.core.Either
 import io.vliet.mjsbackend.controller.DatasetOrderController
-import io.vliet.mjsbackend.domain.DatasetOrder
+import io.vliet.mjsbackend.messages.DatasetOrder
 import io.vliet.mjsbackend.repository.DeviceRepository
 import io.vliet.mjsbackend.repository.MeasurementDao
 import io.vliet.mjsbackend.repository.VariableRepository

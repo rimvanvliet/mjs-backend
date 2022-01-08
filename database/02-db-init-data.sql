@@ -5,11 +5,11 @@ INSERT INTO public.device (id, name) VALUES (102, '111');
 INSERT INTO public.device (id, name) VALUES (103, '364');
 
 
-INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (200, 'CO2', 1, 'CO2', 'ppm');
-INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (201, 'temperature', 2, 'temperature', '°C');
-INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (202, 'relative humidity', 3, 'relative humidity', '%RH');
-INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (203, 'PM10', 4, 'PM10', 'µg/m3');
-INSERT INTO public.variable (id, reuse_name, key, substance, unit) VALUES (204, 'PM2.5', 5, 'PM2.5', 'µg/m3');
+INSERT INTO public.variable (id, unique_name, key, substance, unit) VALUES (200, 'CO2', 1, 'CO2', 'ppm');
+INSERT INTO public.variable (id, unique_name, key, substance, unit) VALUES (201, 'temperature', 2, 'temperature', '°C');
+INSERT INTO public.variable (id, unique_name, key, substance, unit) VALUES (202, 'relative humidity', 3, 'relative humidity', '%RH');
+INSERT INTO public.variable (id, unique_name, key, substance, unit) VALUES (203, 'PM10', 4, 'PM10', 'µg/m3');
+INSERT INTO public.variable (id, unique_name, key, substance, unit) VALUES (204, 'PM2.5', 5, 'PM2.5', 'µg/m3');
 
 
 
